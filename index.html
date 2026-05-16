@@ -74,5 +74,116 @@ body {
     </div>
     <div class="hint">Cliquez sur le livret pour activer l'effet interactif</div>
   </div>
+
+<style>
+.rsvp-btn{
+  margin-top:16px;
+  background:#c9a46a;
+  color:white;
+  border:none;
+  padding:12px 24px;
+  border-radius:999px;
+  font-size:1rem;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+.rsvp-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:1000;
+  justify-content:center;
+  align-items:center;
+}
+.rsvp-card{
+  width:min(92vw,560px);
+  background:#fbf7ef;
+  border:2px solid rgba(201,164,106,.7);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+  font-family:Georgia, serif;
+}
+.rsvp-card h2{
+  margin-top:0;
+  color:#8a6b35;
+  text-align:center;
+}
+.rsvp-card input, .rsvp-card textarea, .rsvp-card select{
+  width:100%;
+  padding:10px 12px;
+  margin:6px 0 14px;
+  border:1px solid #d7c29a;
+  border-radius:10px;
+  font-size:1rem;
+  box-sizing:border-box;
+}
+.rsvp-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+.rsvp-actions button{
+  border:none;
+  padding:10px 20px;
+  border-radius:999px;
+  cursor:pointer;
+}
+.send-btn{ background:#c9a46a; color:white; }
+.cancel-btn{ background:#e9dfcc; color:#5a4934; }
+</style>
+
+<button class="rsvp-btn" onclick="document.getElementById('rsvpModal').style.display='flex'">
+Confirmer votre présence (RSVP)
+</button>
+
+<div class="rsvp-modal" id="rsvpModal">
+  <div class="rsvp-card">
+    <h2>Confirmation de présence</h2>
+
+    <label>Nom complet</label>
+    <input id="nom" type="text" required>
+
+    <label>Présence</label>
+    <select id="presence">
+      <option>Oui, avec plaisir</option>
+      <option>Non, avec regret</option>
+    </select>
+
+    <label>Nombre de personnes</label>
+    <input id="nb" type="number" min="1" max="10" value="1">
+
+    <label>Message aux mariés (optionnel)</label>
+    <textarea id="msg" rows="4"></textarea>
+
+    <div class="rsvp-actions">
+      <button class="send-btn" onclick="envoyerRSVP()">Envoyer</button>
+      <button class="cancel-btn" onclick="document.getElementById('rsvpModal').style.display='none'">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function envoyerRSVP(){
+  const nom = document.getElementById('nom').value || 'Invité';
+  const presence = document.getElementById('presence').value;
+  const nb = document.getElementById('nb').value || '1';
+  const msg = document.getElementById('msg').value || '';
+  const sujet = encodeURIComponent('RSVP Mariage Nirina & Jessie');
+  const corps = encodeURIComponent(
+    'Nom complet : ' + nom + '\n' +
+    'Présence : ' + presence + '\n' +
+    'Nombre de personnes : ' + nb + '\n\n' +
+    'Message :\n' + msg
+  );
+  window.location.href = 'mailto:nirina@n-letsara.net?subject=' + sujet + '&body=' + corps;
+}
+window.addEventListener('click', function(e){
+  const modal = document.getElementById('rsvpModal');
+  if(e.target === modal){ modal.style.display = 'none'; }
+});
+</script>
+
 </body>
 </html>
